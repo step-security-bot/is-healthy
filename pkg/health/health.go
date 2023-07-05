@@ -92,6 +92,9 @@ func GetResourceHealth(obj *unstructured.Unstructured, healthOverride HealthOver
 
 // GetHealthCheckFunc returns built-in health check function or nil if health check is not supported
 func GetHealthCheckFunc(gvk schema.GroupVersionKind) func(obj *unstructured.Unstructured) (*HealthStatus, error) {
+	if gvk.Kind == "Node" {
+		return getNodeHealth
+	}
 	switch gvk.Group {
 	case "apps":
 		switch gvk.Kind {
