@@ -86,6 +86,12 @@ func GetResourceHealth(obj *unstructured.Unstructured, healthOverride HealthOver
 			}
 		}
 	}
+
+	if health == nil {
+		return &HealthStatus{
+			Status: HealthStatusUnknown,
+		}, nil
+	}
 	return health, err
 
 }
