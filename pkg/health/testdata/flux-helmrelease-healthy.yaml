@@ -1,0 +1,61 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  annotations:
+    flanksource.com/tenant-slug: queen
+  creationTimestamp: "2023-09-21T04:10:15Z"
+  finalizers:
+  - finalizers.fluxcd.io
+  generation: 1
+  labels:
+    kustomize.toolkit.fluxcd.io/name: sass-dev
+    kustomize.toolkit.fluxcd.io/namespace: flux-system
+  name: org-99ufqu0vnxbp
+  namespace: org-99ufqu0vnxbp
+  resourceVersion: "163518673"
+  uid: 2f62896b-3f4a-45f6-ac04-85d69ea5ce94
+spec:
+  chart:
+    spec:
+      chart: mission-control-tenant
+      interval: 1m
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: flanksource
+        namespace: production
+      version: '*'
+  install:
+    crds: CreateReplace
+  interval: 5m
+  upgrade:
+    crds: CreateReplace
+  values:
+    domain: mission-control.org-99ufqu0vnxbp.internal-prod.flanksource.com
+    missionControl:
+      authProvider: clerk
+      clerkJWKSURL: https://secure-eagle-96.clerk.accounts.dev/.well-known/jwks.json
+      clerkOrgID: org_2VgrzjgV6hpABCP99Ufqu0vNXBp
+    vcluster:
+      syncer:
+        extraArgs:
+        - --tls-san=org-99ufqu0vnxbp.org-99ufqu0vnxbp.svc
+        - --out-kube-config-server=https://org-99ufqu0vnxbp.org-99ufqu0vnxbp.svc
+status:
+  conditions:
+  - lastTransitionTime: "2023-09-21T04:10:49Z"
+    message: Release reconciliation succeeded
+    reason: ReconciliationSucceeded
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-09-21T04:10:49Z"
+    message: Helm install succeeded
+    reason: InstallSucceeded
+    status: "True"
+    type: Released
+  helmChart: production/org-99ufqu0vnxbp-org-99ufqu0vnxbp
+  lastAppliedRevision: 1.0.26
+  lastAttemptedRevision: 1.0.26
+  lastAttemptedValuesChecksum: ad7edac2049615ce7877b87501c508f61b8e714b
+  lastReleaseRevision: 1
+  observedGeneration: 1

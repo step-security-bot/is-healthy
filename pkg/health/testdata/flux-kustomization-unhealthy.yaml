@@ -1,0 +1,110 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  creationTimestamp: "2023-09-12T10:03:50Z"
+  finalizers:
+  - finalizers.fluxcd.io
+  generation: 6
+  name: sass-dev
+  namespace: flux-system
+  resourceVersion: "166315859"
+  uid: 810131ce-d2f3-48c4-9685-d47d886cb2f4
+spec:
+  decryption:
+    provider: sops
+  force: false
+  interval: 1m
+  path: ./
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: sass-dev
+  timeout: 3m0s
+  wait: true
+status:
+  conditions:
+  - lastTransitionTime: "2023-09-25T02:30:26Z"
+    message: Running health checks for revision main@sha1:66b129d7c6a06513d480eb00e6ff66b2ba9b7a9c
+      with a timeout of 3m0s
+    observedGeneration: 6
+    reason: Progressing
+    status: "True"
+    type: Reconciling
+  - lastTransitionTime: "2023-09-25T02:30:25Z"
+    message: Reconciliation in progress
+    observedGeneration: 6
+    reason: Progressing
+    status: Unknown
+    type: Ready
+  - lastTransitionTime: "2023-09-25T02:30:26Z"
+    message: Running health checks for revision main@sha1:66b129d7c6a06513d480eb00e6ff66b2ba9b7a9c
+      with a timeout of 3m0s
+    observedGeneration: 6
+    reason: Progressing
+    status: Unknown
+    type: Healthy
+  inventory:
+    entries:
+    - id: _doors__Namespace
+      v: v1
+    - id: _movies__Namespace
+      v: v1
+    - id: _org-99ufqu0vnxbp__Namespace
+      v: v1
+    - id: _org-creation-demo__Namespace
+      v: v1
+    - id: _org-u41iszbnkzoh__Namespace
+      v: v1
+    - id: _pink-floyd__Namespace
+      v: v1
+    - id: _pixel__Namespace
+      v: v1
+    - id: _test-moshe-demo__Namespace
+      v: v1
+    - id: _test-moshe-test2__Namespace
+      v: v1
+    - id: _wycliffe-organization__Namespace
+      v: v1
+    - id: doors_db-credentials__Secret
+      v: v1
+    - id: movies_db-credentials__Secret
+      v: v1
+    - id: org-99ufqu0vnxbp_db-credentials__Secret
+      v: v1
+    - id: org-creation-demo_db-credentials__Secret
+      v: v1
+    - id: org-u41iszbnkzoh_db-credentials__Secret
+      v: v1
+    - id: pink-floyd_db-credentials__Secret
+      v: v1
+    - id: pixel_db-credentials__Secret
+      v: v1
+    - id: test-moshe-demo_db-credentials__Secret
+      v: v1
+    - id: test-moshe-test2_db-credentials__Secret
+      v: v1
+    - id: wycliffe-organization_db-credentials__Secret
+      v: v1
+    - id: doors_doors_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+    - id: movies_movies_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+    - id: org-99ufqu0vnxbp_org-99ufqu0vnxbp_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+    - id: org-creation-demo_org-creation-demo_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+    - id: org-u41iszbnkzoh_org-u41iszbnkzoh_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+    - id: pink-floyd_pink-floyd_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+    - id: pixel_pixel_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+    - id: test-moshe-demo_test-moshe-demo_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+    - id: test-moshe-test2_test-moshe-test2_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+    - id: wycliffe-organization_wycliffe-organization_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+  lastAppliedRevision: main@sha1:c75656a8fdb322852f038f863aca0bf94a79f7e4
+  lastAttemptedRevision: main@sha1:66b129d7c6a06513d480eb00e6ff66b2ba9b7a9c
+  observedGeneration: 3

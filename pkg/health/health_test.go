@@ -167,3 +167,11 @@ func TestGetArgoWorkflowHealth(t *testing.T) {
 	assert.Equal(t, "", health.Message)
 
 }
+
+func TestFluxResources(t *testing.T) {
+	assertAppHealth(t, "./testdata/flux-kustomization-healthy.yaml", HealthStatusHealthy)
+	assertAppHealth(t, "./testdata/flux-kustomization-unhealthy.yaml", HealthStatusDegraded)
+
+	assertAppHealth(t, "./testdata/flux-helmrelease-healthy.yaml", HealthStatusHealthy)
+	assertAppHealth(t, "./testdata/flux-helmrelease-unhealthy.yaml", HealthStatusDegraded)
+}
