@@ -1,0 +1,44 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"source.toolkit.fluxcd.io/v1beta2","kind":"HelmRepository","metadata":{"annotations":{},"name":"bad-helm-repo","namespace":"mission-control"},"spec":{"interval":"1m","provider":"generic","timeout":"60s","url":"https://flanksource.example.io/charts"}}
+  creationTimestamp: "2023-10-03T13:12:48Z"
+  finalizers:
+  - finalizers.fluxcd.io
+  generation: 1
+  name: bad-helm-repo
+  namespace: mission-control
+  resourceVersion: "101439998"
+  uid: 822d8e05-c7c4-4822-b3c3-1a3e93b8e4ce
+spec:
+  interval: 1m
+  provider: generic
+  timeout: 60s
+  url: https://flanksource.example.io/charts
+status:
+  conditions:
+  - lastTransitionTime: "2023-10-03T13:12:48Z"
+    message: no artifact for resource in storage
+    observedGeneration: 1
+    reason: NoArtifact
+    status: "True"
+    type: Reconciling
+  - lastTransitionTime: "2023-10-03T13:12:48Z"
+    message: 'failed to fetch Helm repository index: failed to cache index to temporary
+      file: Get "https://flanksource.example.io/charts/index.yaml": dial tcp: lookup
+      flanksource.example.io on 172.20.0.10:53: no such host'
+    observedGeneration: 1
+    reason: Failed
+    status: "False"
+    type: Ready
+  - lastTransitionTime: "2023-10-03T13:12:48Z"
+    message: 'failed to fetch Helm repository index: failed to cache index to temporary
+      file: Get "https://flanksource.example.io/charts/index.yaml": dial tcp: lookup
+      flanksource.example.io on 172.20.0.10:53: no such host'
+    observedGeneration: 1
+    reason: Failed
+    status: "True"
+    type: FetchFailed
+  observedGeneration: -1

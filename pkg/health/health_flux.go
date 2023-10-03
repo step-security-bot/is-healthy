@@ -133,3 +133,60 @@ func getFluxHelmReleaseHealth(obj *unstructured.Unstructured) (*HealthStatus, er
 
 	return &HealthStatus{Status: HealthStatusUnknown, Message: ""}, nil
 }
+
+type fluxRepoStatusType string
+
+const (
+	fluxRepoReconciling       fluxRepoStatusType = "Reconciling"
+	fluxRepoReady             fluxRepoStatusType = "Ready"
+	fluxRepoFetchFailed       fluxRepoStatusType = "FetchFailed"
+	fluxRepoArtifactInStorage helmStatusType     = "ArtifactInStorage"
+)
+
+type fluxRepo struct {
+	Status struct {
+		Conditions []struct {
+			Type    fluxRepoStatusType
+			Status  v1.ConditionStatus
+			Reason  string
+			Message string
+		}
+	}
+}
+
+func getFluxRepositoryHealth(obj *unstructured.Unstructured) (*HealthStatus, error) {
+	var hr fluxRepo
+	err := runtime.DefaultUnstructuredConverter.FromUnstructured(obj.Object, &hr)
+	if err != nil {
+		return nil, err
+	}
+
+	ranking := map[fluxRepoStatusType]int{
+		fluxRepoReady:       3,
+		fluxRepoFetchFailed: 2,
+		fluxRepoReconciling: 1,
+	}
+	sort.Slice(hr.Status.Conditions, func(i, j int) bool {
+		return ranking[hr.Status.Conditions[i].Type] > ranking[hr.Status.Conditions[j].Type]
+	})
+
+	for _, c := range hr.Status.Conditions {
+		msg := fmt.Sprintf("%s: %s", c.Reason, c.Message)
+		if c.Type == fluxRepoReady {
+			if c.Status == v1.ConditionTrue {
+				return &HealthStatus{Status: HealthStatusHealthy, Message: msg}, nil
+			} else {
+				return &HealthStatus{Status: HealthStatusDegraded, Message: msg}, nil
+			}
+		}
+
+		// All conditions apart from Healthy/Ready should be false
+		if c.Status == v1.ConditionTrue {
+			return &HealthStatus{
+				Status:  HealthStatusDegraded,
+				Message: msg,
+			}, nil
+		}
+	}
+	return &HealthStatus{Status: HealthStatusUnknown, Message: ""}, nil
+}

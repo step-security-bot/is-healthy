@@ -174,4 +174,10 @@ func TestFluxResources(t *testing.T) {
 
 	assertAppHealth(t, "./testdata/flux-helmrelease-healthy.yaml", HealthStatusHealthy)
 	assertAppHealth(t, "./testdata/flux-helmrelease-unhealthy.yaml", HealthStatusDegraded)
+
+	assertAppHealth(t, "./testdata/flux-helmrepository-healthy.yaml", HealthStatusHealthy)
+	assertAppHealth(t, "./testdata/flux-helmrepository-unhealthy.yaml", HealthStatusDegraded)
+
+	assertAppHealth(t, "./testdata/flux-gitrepository-healthy.yaml", HealthStatusHealthy)
+	assertAppHealth(t, "./testdata/flux-gitrepository-unhealthy.yaml", HealthStatusDegraded)
 }
