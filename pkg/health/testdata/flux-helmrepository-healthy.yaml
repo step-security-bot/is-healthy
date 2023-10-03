@@ -1,0 +1,42 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  creationTimestamp: "2023-05-23T12:22:24Z"
+  finalizers:
+  - finalizers.fluxcd.io
+  generation: 1
+  labels:
+    kustomize.toolkit.fluxcd.io/name: aws-demo-infra
+    kustomize.toolkit.fluxcd.io/namespace: flux-system
+  name: mission-control
+  namespace: mission-control
+  resourceVersion: "101351925"
+  uid: d91afcbe-f94a-4d5e-b97a-59c5a0c3b82f
+spec:
+  interval: 1m
+  provider: generic
+  timeout: 60s
+  url: https://flanksource.github.io/charts
+status:
+  artifact:
+    checksum: f4459d4394fd7a26087ff39981bba4fcd24f315491e0022d5bdde33c843163b6
+    lastUpdateTime: "2023-10-03T10:02:45Z"
+    path: helmrepository/mission-control/mission-control/index-f4459d4394fd7a26087ff39981bba4fcd24f315491e0022d5bdde33c843163b6.yaml
+    revision: f4459d4394fd7a26087ff39981bba4fcd24f315491e0022d5bdde33c843163b6
+    size: 283791
+    url: http://source-controller.flux-system.svc.cluster.local./helmrepository/mission-control/mission-control/index-f4459d4394fd7a26087ff39981bba4fcd24f315491e0022d5bdde33c843163b6.yaml
+  conditions:
+  - lastTransitionTime: "2023-10-03T10:02:45Z"
+    message: stored artifact for revision 'f4459d4394fd7a26087ff39981bba4fcd24f315491e0022d5bdde33c843163b6'
+    observedGeneration: 1
+    reason: Succeeded
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-10-03T10:02:45Z"
+    message: stored artifact for revision 'f4459d4394fd7a26087ff39981bba4fcd24f315491e0022d5bdde33c843163b6'
+    observedGeneration: 1
+    reason: Succeeded
+    status: "True"
+    type: ArtifactInStorage
+  observedGeneration: 1
+  url: http://source-controller.flux-system.svc.cluster.local./helmrepository/mission-control/mission-control/index.yaml

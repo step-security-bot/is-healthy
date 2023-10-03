@@ -1,0 +1,51 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"kustomize.toolkit.fluxcd.io/v1","kind":"Kustomization","metadata":{"annotations":{},"name":"saas-prod","namespace":"flux-system"},"spec":{"decryption":{"provider":"sops"},"force":false,"interval":"1m","path":"./","prune":true,"sourceRef":{"kind":"GitRepository","name":"saas-prod"},"timeout":"3m0s","wait":true}}
+  creationTimestamp: "2023-09-22T01:36:56Z"
+  finalizers:
+  - finalizers.fluxcd.io
+  generation: 1
+  name: saas-prod
+  namespace: flux-system
+  resourceVersion: "166315643"
+  uid: a87971a1-6a57-42a6-a168-f82015ea038c
+spec:
+  decryption:
+    provider: sops
+  force: false
+  interval: 1m
+  path: ./
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: saas-prod
+  timeout: 3m0s
+  wait: true
+status:
+  conditions:
+  - lastTransitionTime: "2023-09-25T02:30:00Z"
+    message: 'Applied revision: main@sha1:9b42e2fb78ab28c2751fd990adf70e99876fc773'
+    observedGeneration: 1
+    reason: ReconciliationSucceeded
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-09-25T02:30:00Z"
+    message: Health check passed in 100.714146ms
+    observedGeneration: 1
+    reason: Succeeded
+    status: "True"
+    type: Healthy
+  inventory:
+    entries:
+    - id: _org-km5ujf27jyjt__Namespace
+      v: v1
+    - id: org-km5ujf27jyjt_db-credentials__Secret
+      v: v1
+    - id: org-km5ujf27jyjt_org-km5ujf27jyjt_helm.toolkit.fluxcd.io_HelmRelease
+      v: v2beta1
+  lastAppliedRevision: main@sha1:9b42e2fb78ab28c2751fd990adf70e99876fc773
+  lastAttemptedRevision: main@sha1:9b42e2fb78ab28c2751fd990adf70e99876fc773
+  observedGeneration: 1

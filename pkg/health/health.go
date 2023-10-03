@@ -123,6 +123,22 @@ func GetHealthCheckFunc(gvk schema.GroupVersionKind) func(obj *unstructured.Unst
 		case "Workflow":
 			return getArgoWorkflowHealth
 		}
+	case "kustomize.toolkit.fluxcd.io":
+		switch gvk.Kind {
+		case "Kustomization":
+			return getFluxKustomizationHealth
+		}
+	case "helm.toolkit.fluxcd.io":
+		switch gvk.Kind {
+		case "HelmRelease":
+			return getFluxHelmReleaseHealth
+		}
+	case "source.toolkit.fluxcd.io":
+		switch gvk.Kind {
+		case "HelmRepository", "GitRepository":
+			return getFluxRepositoryHealth
+		}
+
 	// case "apiregistration.k8s.io":
 	// 	switch gvk.Kind {
 	// 	case APIServiceKind:

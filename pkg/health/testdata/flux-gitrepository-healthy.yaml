@@ -1,0 +1,45 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"source.toolkit.fluxcd.io/v1beta1","kind":"GitRepository","metadata":{"annotations":{},"name":"canaries","namespace":"default"},"spec":{"interval":"30s","url":"https://github.com/flanksource/canary-checker.git"}}
+  creationTimestamp: "2023-05-16T14:03:38Z"
+  finalizers:
+  - finalizers.fluxcd.io
+  generation: 1
+  labels:
+    kustomize.toolkit.fluxcd.io/name: aws-demo-infra
+    kustomize.toolkit.fluxcd.io/namespace: flux-system
+  name: canaries
+  namespace: default
+  resourceVersion: "100767103"
+  uid: 7d47e7d7-c53d-433a-97bf-6f14b0b95eb9
+spec:
+  gitImplementation: go-git
+  interval: 30s
+  timeout: 60s
+  url: https://github.com/flanksource/canary-checker.git
+status:
+  artifact:
+    checksum: fee48e8ee84e69ab64909b97cc0e30910c39b3a596844b313f5dfd96eae9a475
+    lastUpdateTime: "2023-10-02T13:02:08Z"
+    path: gitrepository/default/canaries/8fbe8846976f32930c567362c3d890b312af7ada.tar.gz
+    revision: master/8fbe8846976f32930c567362c3d890b312af7ada
+    size: 433724
+    url: http://source-controller.flux-system.svc.cluster.local./gitrepository/default/canaries/8fbe8846976f32930c567362c3d890b312af7ada.tar.gz
+  conditions:
+  - lastTransitionTime: "2023-10-02T13:02:08Z"
+    message: stored artifact for revision 'master/8fbe8846976f32930c567362c3d890b312af7ada'
+    observedGeneration: 1
+    reason: Succeeded
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-10-02T13:02:08Z"
+    message: stored artifact for revision 'master/8fbe8846976f32930c567362c3d890b312af7ada'
+    observedGeneration: 1
+    reason: Succeeded
+    status: "True"
+    type: ArtifactInStorage
+  observedGeneration: 1
+  url: http://source-controller.flux-system.svc.cluster.local./gitrepository/default/canaries/latest.tar.gz

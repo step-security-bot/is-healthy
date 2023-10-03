@@ -1,0 +1,79 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  annotations:
+    meta.helm.sh/release-name: netflix
+    meta.helm.sh/release-namespace: netflix
+  creationTimestamp: "2023-09-11T12:35:35Z"
+  finalizers:
+  - finalizers.fluxcd.io
+  generation: 2
+  labels:
+    app.kubernetes.io/instance: netflix
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mission-control-tenant
+    app.kubernetes.io/version: 1.0.26
+    helm.sh/chart: mission-control-tenant-1.0.26
+    helm.toolkit.fluxcd.io/name: netflix
+    helm.toolkit.fluxcd.io/namespace: netflix
+  name: netflix-mission-control-tenant
+  namespace: netflix
+  resourceVersion: "156985353"
+  uid: 7568b4fe-e5b3-442d-abdb-1f1f7bdb8e0c
+spec:
+  chart:
+    spec:
+      chart: mission-control
+      interval: 1m
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: netflix-mission-control-tenant
+      version: '>=0.0.0'
+  install:
+    crds: CreateReplace
+    createNamespace: true
+  interval: 5m
+  kubeConfig:
+    secretRef:
+      key: config
+      name: vc-netflix
+  storageNamespace: default
+  targetNamespace: default
+  upgrade:
+    crds: CreateReplace
+  values:
+    authProvider: clerk
+    clerkJWKSURL: https://secure-eagle-96.clerk.accounts.dev/.well-known/jwks.json
+    clerkOrgID: org_2VFcRC1Y4JSIUSoDfGUt8X2GZxd
+    db:
+      create: false
+    flanksource-ui:
+      enabled: false
+    kratos:
+      enabled: false
+status:
+  conditions:
+  - lastTransitionTime: "2023-09-11T14:12:06Z"
+    message: upgrade retries exhausted
+    reason: UpgradeFailed
+    status: "False"
+    type: Ready
+  - lastTransitionTime: "2023-09-11T14:12:06Z"
+    message: "Helm upgrade failed: timed out waiting for the condition\n\nLast Helm
+      logs:\n\nPatch PriorityClass \"canary-checker-priority\" in namespace \nwaiting
+      for release default-netflix-mission-control-tenant resources (created: 0 updated:
+      26  deleted: 0)\nbeginning wait for 26 resources with timeout of 5m0s\nDeployment
+      is not ready: default/apm-hub. 0 out of 1 expected pods are ready\nwarning:
+      Upgrade \"default-netflix-mission-control-tenant\" failed: timed out waiting
+      for the condition"
+    reason: UpgradeFailed
+    status: "False"
+    type: Released
+  failures: 5
+  helmChart: netflix/netflix-netflix-mission-control-tenant
+  lastAttemptedRevision: 0.1.78
+  lastAttemptedValuesChecksum: cb9e2a3be47bf2a9b01338dd991d2553d5492fe5
+  lastReleaseRevision: 2
+  observedGeneration: 1
+  upgradeFailures: 1

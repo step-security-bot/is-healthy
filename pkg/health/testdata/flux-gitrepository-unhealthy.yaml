@@ -1,0 +1,44 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"source.toolkit.fluxcd.io/v1beta2","kind":"GitRepository","metadata":{"annotations":{},"name":"bad-git","namespace":"mission-control"},"spec":{"gitImplementation":"go-git","interval":"30s","timeout":"60s","url":"https://github.wrong.com/flanksource/canary-checker.git"}}
+  creationTimestamp: "2023-10-03T18:25:08Z"
+  finalizers:
+  - finalizers.fluxcd.io
+  generation: 1
+  name: bad-git
+  namespace: mission-control
+  resourceVersion: "101584775"
+  uid: e4fcb2c2-96c5-4eb0-b60b-17f55d7a7007
+spec:
+  gitImplementation: go-git
+  interval: 30s
+  timeout: 60s
+  url: https://github.wrong.com/flanksource/canary-checker.git
+status:
+  conditions:
+  - lastTransitionTime: "2023-10-03T18:25:08Z"
+    message: no artifact for resource in storage
+    observedGeneration: 1
+    reason: NoArtifact
+    status: "True"
+    type: Reconciling
+  - lastTransitionTime: "2023-10-03T18:25:08Z"
+    message: 'failed to checkout and determine revision: unable to clone ''https://github.wrong.com/flanksource/canary-checker.git'':
+      Get "https://github.wrong.com/flanksource/canary-checker.git/info/refs?service=git-upload-pack":
+      dial tcp: lookup github.wrong.com on 172.20.0.10:53: no such host'
+    observedGeneration: 1
+    reason: GitOperationFailed
+    status: "False"
+    type: Ready
+  - lastTransitionTime: "2023-10-03T18:25:08Z"
+    message: 'failed to checkout and determine revision: unable to clone ''https://github.wrong.com/flanksource/canary-checker.git'':
+      Get "https://github.wrong.com/flanksource/canary-checker.git/info/refs?service=git-upload-pack":
+      dial tcp: lookup github.wrong.com on 172.20.0.10:53: no such host'
+    observedGeneration: 1
+    reason: GitOperationFailed
+    status: "True"
+    type: FetchFailed
+  observedGeneration: -1
