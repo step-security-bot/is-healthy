@@ -168,6 +168,11 @@ func TestGetArgoWorkflowHealth(t *testing.T) {
 
 }
 
+func TestArgoApplication(t *testing.T) {
+	assertAppHealth(t, "./testdata/argo-application-healthy.yaml", HealthStatusHealthy)
+	assertAppHealth(t, "./testdata/argo-application-missing.yaml", HealthStatusMissing)
+}
+
 func TestFluxResources(t *testing.T) {
 	assertAppHealth(t, "./testdata/flux-kustomization-healthy.yaml", HealthStatusHealthy)
 	assertAppHealth(t, "./testdata/flux-kustomization-unhealthy.yaml", HealthStatusDegraded)

@@ -1,0 +1,542 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  uid: 35c79f71-bc53-4148-94c4-dea231ee8eb3
+  name: sock-shop
+  namespace: argo
+  creationTimestamp: 2023-10-19T14:09:09Z
+spec:
+  source:
+    path: sock-shop
+    repoURL: https://github.com/argoproj/argocd-example-apps
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sock-shop
+status:
+  sync:
+    status: Synced
+    revision: d7927a27b4533926b7d86b5f249cd9ebe7625e90
+    comparedTo:
+      source:
+        path: sock-shop
+        repoURL: https://github.com/argoproj/argocd-example-apps
+        targetRevision: HEAD
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: sock-shop
+  health:
+    status: Healthy
+  history:
+    - id: 0
+      source:
+        path: sock-shop
+        repoURL: https://github.com/argoproj/argocd-example-apps
+        targetRevision: HEAD
+      revision: 53e28ff20cc530b9ada2173fbbd64d48338583ba
+      deployedAt: 2023-10-19T14:09:15Z
+      deployStartedAt: 2023-10-19T14:09:12Z
+  summary:
+    images:
+      - kbudde/rabbitmq-exporter
+      - mongo
+      - rabbitmq:3.6.8-management
+      - redis:alpine
+      - weaveworksdemos/carts:0.4.8
+      - weaveworksdemos/catalogue-db:0.3.0
+      - weaveworksdemos/catalogue:0.3.5
+      - weaveworksdemos/front-end:0.3.12
+      - weaveworksdemos/orders:0.4.7
+      - weaveworksdemos/payment:0.4.3
+      - weaveworksdemos/queue-master:0.3.1
+      - weaveworksdemos/shipping:0.4.8
+      - weaveworksdemos/user-db:0.3.0
+      - weaveworksdemos/user:0.4.7
+  resources:
+    - kind: Service
+      name: carts-db
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: catalogue
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: catalogue-db
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: front-end
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: orders
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: orders-db
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: payment
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: queue-master
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: rabbitmq
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: session-db
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: shipping
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: user
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Service
+      name: user-db
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: carts
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: carts-db
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: catalogue
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: catalogue-db
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: front-end
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: orders
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: orders-db
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: payment
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: queue-master
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: rabbitmq
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: session-db
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: shipping
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: user
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+    - kind: Deployment
+      name: user-db
+      group: apps
+      health:
+        status: Healthy
+      status: Synced
+      version: v1
+      namespace: sock-shop
+  sourceType: Kustomize
+  reconciledAt: 2024-01-22T18:13:51Z
+  operationState:
+    phase: Succeeded
+    message: successfully synced (all tasks run)
+    operation:
+      sync:
+        prune: true
+        revision: 53e28ff20cc530b9ada2173fbbd64d48338583ba
+        syncOptions:
+          - CreateNamespace=true
+      retry:
+        limit: 5
+      initiatedBy:
+        automated: true
+    startedAt: 2023-10-19T14:09:12Z
+    finishedAt: 2023-10-19T14:09:15Z
+    syncResult:
+      source:
+        path: sock-shop
+        repoURL: https://github.com/argoproj/argocd-example-apps
+        targetRevision: HEAD
+      revision: 53e28ff20cc530b9ada2173fbbd64d48338583ba
+      resources:
+        - kind: Namespace
+          name: sock-shop
+          group: ""
+          status: Synced
+          message: namespace/sock-shop created
+          version: v1
+          hookPhase: Running
+          namespace: ""
+          syncPhase: PreSync
+        - kind: Service
+          name: carts-db
+          group: ""
+          status: Synced
+          message: service/carts-db created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: front-end
+          group: ""
+          status: Synced
+          message: service/front-end created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: user-db
+          group: ""
+          status: Synced
+          message: service/user-db created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: payment
+          group: ""
+          status: Synced
+          message: service/payment created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: session-db
+          group: ""
+          status: Synced
+          message: service/session-db created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: shipping
+          group: ""
+          status: Synced
+          message: service/shipping created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: catalogue-db
+          group: ""
+          status: Synced
+          message: service/catalogue-db created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: rabbitmq
+          group: ""
+          status: Synced
+          message: service/rabbitmq created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: user
+          group: ""
+          status: Synced
+          message: service/user created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: queue-master
+          group: ""
+          status: Synced
+          message: service/queue-master created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: catalogue
+          group: ""
+          status: Synced
+          message: service/catalogue created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: orders
+          group: ""
+          status: Synced
+          message: service/orders created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Service
+          name: orders-db
+          group: ""
+          status: Synced
+          message: service/orders-db created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: payment
+          group: apps
+          status: Synced
+          message: deployment.apps/payment created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: carts-db
+          group: apps
+          status: Synced
+          message: deployment.apps/carts-db created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: carts
+          group: apps
+          status: Synced
+          message: deployment.apps/carts created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: orders
+          group: apps
+          status: Synced
+          message: deployment.apps/orders created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: catalogue
+          group: apps
+          status: Synced
+          message: deployment.apps/catalogue created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: front-end
+          group: apps
+          status: Synced
+          message: deployment.apps/front-end created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: queue-master
+          group: apps
+          status: Synced
+          message: deployment.apps/queue-master created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: rabbitmq
+          group: apps
+          status: Synced
+          message: deployment.apps/rabbitmq created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: shipping
+          group: apps
+          status: Synced
+          message: deployment.apps/shipping created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: orders-db
+          group: apps
+          status: Synced
+          message: deployment.apps/orders-db created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: session-db
+          group: apps
+          status: Synced
+          message: deployment.apps/session-db created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: catalogue-db
+          group: apps
+          status: Synced
+          message: deployment.apps/catalogue-db created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: user-db
+          group: apps
+          status: Synced
+          message: deployment.apps/user-db created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+        - kind: Deployment
+          name: user
+          group: apps
+          status: Synced
+          message: deployment.apps/user created
+          version: v1
+          hookPhase: Running
+          namespace: sock-shop
+          syncPhase: Sync
+  controllerNamespace: argo
