@@ -122,6 +122,8 @@ func GetHealthCheckFunc(gvk schema.GroupVersionKind) func(obj *unstructured.Unst
 		switch gvk.Kind {
 		case "Workflow":
 			return getArgoWorkflowHealth
+		case "Application":
+			return getArgoApplicationHealth
 		}
 	case "kustomize.toolkit.fluxcd.io":
 		switch gvk.Kind {

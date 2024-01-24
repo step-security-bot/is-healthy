@@ -1,0 +1,116 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: 2020-06-09T21:12:35Z
+  generation: 1
+  name: health
+  namespace: argocd
+  resourceVersion: "98320132"
+  selfLink: /apis/argoproj.io/v1alpha1/namespaces/argocd/applications/health
+  uid: f0a84b7a-aa95-11ea-be6e-6e1ce29b84e4
+spec:
+  destination:
+    namespace: bridge
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: openshift
+    repoURL: <redacted>
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+status:
+  health:
+    status: Missing
+  history:
+  - deployedAt: 2020-06-10T06:14:35Z
+    id: 15
+    revision: d538b66198c18e4d4363ba6b92b98e171747861f
+    source:
+      path: openshift
+      repoURL: <redacted>
+      targetRevision: HEAD
+  observedAt: 2020-06-10T06:16:38Z
+  operationState:
+    finishedAt: 2020-06-10T06:16:38Z
+    message: successfully synced (all tasks run)
+    operation:
+      initiatedBy:
+        automated: true
+      sync:
+        prune: true
+        resources:
+        - group: bitnami.com
+          kind: SealedSecret
+          name: test-healthcheck-secret
+        - group: cert-manager.io
+          kind: Certificate
+          name: test-certificate-v1
+        revision: d538b66198c18e4d4363ba6b92b98e171747861f
+    phase: Succeeded
+    startedAt: 2020-06-10T06:16:37Z
+    syncResult:
+      resources:
+      - group: cert-manager.io
+        hookPhase: Running
+        kind: Certificate
+        message: certificate.cert-manager.io/test-certificate-v1 unchanged
+        name: test-certificate-v1
+        namespace: bridge
+        status: Synced
+        syncPhase: Sync
+        version: v1alpha2
+      - group: bitnami.com
+        hookPhase: Running
+        kind: SealedSecret
+        message: sealedsecret.bitnami.com/test-healthcheck-secret unchanged
+        name: test-healthcheck-secret
+        namespace: bridge
+        status: Synced
+        syncPhase: Sync
+        version: v1alpha1
+      revision: d538b66198c18e4d4363ba6b92b98e171747861f
+      source:
+        path: openshift
+        repoURL: <redacted>
+        targetRevision: HEAD
+  reconciledAt: 2020-06-10T06:16:38Z
+  resources:
+  - health:
+      status: Healthy
+    kind: Service
+    name: test-healthcheck-service
+    namespace: bridge
+    status: Synced
+    version: v1
+  - group: bitnami.com
+    health:
+      status: Missing
+    kind: SealedSecret
+    name: test-healthcheck-secret
+    namespace: bridge
+    status: OutOfSync
+    version: v1alpha1
+  - group: cert-manager.io
+    health:
+      status: Missing
+    kind: Certificate
+    name: test-certificate-v1
+    namespace: bridge
+    status: OutOfSync
+    version: v1alpha2
+  sourceType: Directory
+  summary: {}
+  sync:
+    comparedTo:
+      destination:
+        namespace: bridge
+        server: https://kubernetes.default.svc
+      source:
+        path: openshift
+        repoURL: <redacted>
+        targetRevision: HEAD
+    revision: d538b66198c18e4d4363ba6b92b98e171747861f
+    status: OutOfSync
