@@ -136,7 +136,7 @@ func GetHealthCheckFunc(gvk schema.GroupVersionKind) func(obj *unstructured.Unst
 	case "argoproj.io":
 		switch gvk.Kind {
 		case "Workflow":
-			return getArgoWorkflowHealth
+			return GetArgoWorkflowHealth
 		case "Application":
 			return getArgoApplicationHealth
 		}
@@ -161,6 +161,7 @@ func GetHealthCheckFunc(gvk schema.GroupVersionKind) func(obj *unstructured.Unst
 	// 	case APIServiceKind:
 	// 		return getAPIServiceHealth
 	// 	}
+
 	case "networking.k8s.io":
 		switch gvk.Kind {
 		case IngressKind:
@@ -174,6 +175,8 @@ func GetHealthCheckFunc(gvk schema.GroupVersionKind) func(obj *unstructured.Unst
 			return getPVCHealth
 		case PodKind:
 			return getPodHealth
+		case NamespaceKind:
+			return getNamespaceHealth
 		}
 	case "batch":
 		switch gvk.Kind {
