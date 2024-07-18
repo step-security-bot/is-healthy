@@ -84,6 +84,21 @@ func getCorev1PodHealth(pod *corev1.Pod) (*HealthStatus, error) {
 				health = msg.Health
 				status = msg.Status
 				messages = append(messages, msg.Message)
+			} else if containerStatus.RestartCount > 2 && containerStatus.LastTerminationState.Terminated != nil {
+				lastRestarted := containerStatus.LastTerminationState.Terminated.FinishedAt.Time
+				if time.Since(lastRestarted) < time.Minute*30 {
+					return &HealthStatus{
+						Health:  HealthUnhealthy,
+						Status:  HealthStatusCode(containerStatus.LastTerminationState.Terminated.Reason),
+						Message: strings.Join(messages, ", "),
+					}, nil
+				} else if time.Since(lastRestarted) < time.Hour*8 {
+					return &HealthStatus{
+						Health:  HealthWarning,
+						Status:  HealthStatusCode(containerStatus.LastTerminationState.Terminated.Reason),
+						Message: strings.Join(messages, ", "),
+					}, nil
+				}
 			}
 		}
 
