@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -174,17 +175,45 @@ func getCorev1PodHealth(pod *corev1.Pod) (*HealthStatus, error) {
 	case corev1.PodRunning:
 		switch pod.Spec.RestartPolicy {
 		case corev1.RestartPolicyAlways:
-			// if pod is ready, it is automatically healthy
 			if isReady {
+				health := HealthHealthy
+				message := pod.Status.Message
+
+				// A ready pod can be in a warning state if it has been in a restart loop.
+				// i.e. the container completes successfully, but the pod keeps restarting.
+				for _, s := range pod.Status.ContainerStatuses {
+					if s.LastTerminationState.Terminated != nil {
+						lastTerminatedTime := s.LastTerminationState.Terminated.FinishedAt.Time
+						if !lastTerminatedTime.IsZero() && pod.Status.StartTime.Sub(lastTerminatedTime) < time.Hour {
+							health = HealthWarning
+							message = fmt.Sprintf("%s has restarted %d time(s)", s.Name, pod.Status.ContainerStatuses[0].RestartCount)
+						}
+
+						break
+					}
+				}
+
 				return &HealthStatus{
-					Health:  HealthHealthy,
+					Health:  health,
 					Ready:   true,
 					Status:  HealthStatusRunning,
-					Message: pod.Status.Message,
+					Message: message,
 				}, nil
 			}
+
 			// if it's not ready, check to see if any container terminated, if so, it's degraded
+			var nonReadyContainers []ContainerRecord
 			for _, ctrStatus := range pod.Status.ContainerStatuses {
+				if !ctrStatus.Ready {
+					spec := lo.Filter(pod.Spec.Containers, func(i corev1.Container, _ int) bool {
+						return i.Name == ctrStatus.Name
+					})
+					nonReadyContainers = append(nonReadyContainers, ContainerRecord{
+						Status: ctrStatus,
+						Spec:   spec[0],
+					})
+				}
+
 				if ctrStatus.LastTerminationState.Terminated != nil {
 					return &HealthStatus{
 						Health:  HealthUnhealthy,
@@ -194,11 +223,32 @@ func getCorev1PodHealth(pod *corev1.Pod) (*HealthStatus, error) {
 					}, nil
 				}
 			}
+
+			// Pod isn't ready but all containers are
+			if len(nonReadyContainers) == 0 {
+				return &HealthStatus{
+					Health:  HealthWarning,
+					Status:  HealthStatusRunning,
+					Message: pod.Status.Message,
+				}, nil
+			}
+
+			var containersWaitingForReadinessProbe []string
+			for _, c := range nonReadyContainers {
+				if c.Spec.ReadinessProbe == nil || c.Spec.ReadinessProbe.InitialDelaySeconds == 0 {
+					continue
+				}
+
+				if time.Since(c.Status.State.Running.StartedAt.Time) <= time.Duration(c.Spec.ReadinessProbe.InitialDelaySeconds)*time.Second {
+					containersWaitingForReadinessProbe = append(containersWaitingForReadinessProbe, c.Spec.Name)
+				}
+			}
+
 			// otherwise we are progressing towards a ready state
 			return &HealthStatus{
 				Health:  HealthUnknown,
 				Status:  HealthStatusStarting,
-				Message: pod.Status.Message,
+				Message: fmt.Sprintf("Container %s is waiting for readiness probe", strings.Join(containersWaitingForReadinessProbe, ",")),
 			}, nil
 
 		case corev1.RestartPolicyOnFailure, corev1.RestartPolicyNever:
@@ -221,4 +271,9 @@ func getCorev1PodHealth(pod *corev1.Pod) (*HealthStatus, error) {
 		Status:  HealthStatusUnknown,
 		Message: pod.Status.Message,
 	}, nil
+}
+
+type ContainerRecord struct {
+	Spec   corev1.Container
+	Status corev1.ContainerStatus
 }
