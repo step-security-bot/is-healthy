@@ -11,6 +11,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
+// duration after the creation of a replica set
+// within which we never deem the it to be unhealthy.
+const replicaSetBufferPeriod = time.Minute * 10
+
 func getReplicaSetHealth(obj *unstructured.Unstructured) (*HealthStatus, error) {
 	gvk := obj.GroupVersionKind()
 	switch gvk {
@@ -27,6 +31,8 @@ func getReplicaSetHealth(obj *unstructured.Unstructured) (*HealthStatus, error) 
 }
 
 func getAppsv1ReplicaSetHealth(replicaSet *appsv1.ReplicaSet) (*HealthStatus, error) {
+	isWithinBufferPeriod := replicaSet.CreationTimestamp.Add(replicaSetBufferPeriod).After(time.Now())
+
 	var containersWaitingForReadiness []string
 	for _, container := range replicaSet.Spec.Template.Spec.Containers {
 		if container.ReadinessProbe != nil && container.ReadinessProbe.InitialDelaySeconds > 0 {
@@ -62,6 +68,11 @@ func getAppsv1ReplicaSetHealth(replicaSet *appsv1.ReplicaSet) (*HealthStatus, er
 		health = HealthUnhealthy
 	}
 
+	if (health == HealthUnhealthy || health == HealthWarning) && isWithinBufferPeriod {
+		// within the buffer period, we don't mark a ReplicaSet as unhealthy
+		health = HealthUnknown
+	}
+
 	if replicaSet.Generation == replicaSet.Status.ObservedGeneration && replicaSet.Status.ReadyReplicas == *replicaSet.Spec.Replicas {
 		return &HealthStatus{
 			Health: health,
@@ -84,7 +95,6 @@ func getAppsv1ReplicaSetHealth(replicaSet *appsv1.ReplicaSet) (*HealthStatus, er
 			Health:  health,
 			Status:  HealthStatusScalingUp,
 			Message: fmt.Sprintf("%d of %d pods ready", replicaSet.Status.ReadyReplicas, *replicaSet.Spec.Replicas),
-			Ready:   true,
 		}, nil
 	}
 
@@ -93,7 +103,6 @@ func getAppsv1ReplicaSetHealth(replicaSet *appsv1.ReplicaSet) (*HealthStatus, er
 			Health:  health,
 			Status:  HealthStatusScalingDown,
 			Message: fmt.Sprintf("%d pods terminating", replicaSet.Status.ReadyReplicas-*replicaSet.Spec.Replicas),
-			Ready:   true,
 		}, nil
 	}
 
