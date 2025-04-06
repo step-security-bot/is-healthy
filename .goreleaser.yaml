@@ -27,3 +27,9 @@ upx:
   - enabled: true
     goos: [linux]
     lzma: true
+
+archives:
+  - name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    format: binary
+    files:
+      - none*
